@@ -34,13 +34,13 @@ public class UserServicesController {
 		return userRepository.findAll();
 	}
 
-	// Create a new Note
+	// Create a new User
 	@PostMapping("/create")
 	public User createNote(@Valid @RequestBody User user) {
 		return userRepository.save(user);
 	}
 
-	// Delete a Note
+	// Delete a User
 	@DeleteMapping("/user/{id}")
 	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
 		userRepository.deleteById(null);
