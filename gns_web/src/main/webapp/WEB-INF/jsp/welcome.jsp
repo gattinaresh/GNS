@@ -77,8 +77,8 @@
       <div class="table-cell">
         <div class="container">
           <!--<p class="display-6 color-d">Hello, world!</p>-->
-          <h1 class="intro-title mb-4">I am Morgan Freeman</h1>
-          <p class="intro-subtitle"><span class="text-slider-items">CEO DevFolio,Web Developer,Web Designer,Frontend Developer,Graphic Designer</span><strong class="text-slider"></strong></p>
+          <h1 class="intro-title mb-4">I am Gatti Naresh Babu</h1>
+          <p class="intro-subtitle"><span class="text-slider-items">CEO GNS,JAVA Developer</span><strong class="text-slider"></strong></p>
           <!-- <p class="pt-3"><a class="btn btn-primary btn js-scroll px-4" href="#about" role="button">Learn More</a></p> -->
         </div>
       </div>
@@ -101,10 +101,10 @@
                   </div>
                   <div class="col-sm-6 col-md-7">
                     <div class="about-info">
-                      <p><span class="title-s">Name: </span> <span>Morgan Freeman</span></p>
+                      <p><span class="title-s">Name: </span> <span>Naresh Gatti</span></p>
                       <p><span class="title-s">Profile: </span> <span>full stack developer</span></p>
-                      <p><span class="title-s">Email: </span> <span>contact@example.com</span></p>
-                      <p><span class="title-s">Phone: </span> <span>(617) 557-0089</span></p>
+                      <p><span class="title-s">Email: </span> <span>gattinareshbabu@gmail.com</span></p>
+                      <p><span class="title-s">Phone: </span> <span>9177994205</span></p>
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,4 @@
 FROM openjdk:8-jdk-alpine
-EXPOSE 9090
 VOLUME /tmp
 ARG JAR_FILE=target/gns_web-0.0.1-SNAPSHOT.war
 COPY ${JAR_FILE} gns_web.war
