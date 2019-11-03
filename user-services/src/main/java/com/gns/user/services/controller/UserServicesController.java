@@ -1,5 +1,7 @@
 package com.gns.user.services.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -7,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,5 +39,13 @@ public class UserServicesController {
 	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
 		userRepository.deleteById(null);
 		return ResponseEntity.ok().build();
+	}
+
+	// Display All users
+	@GetMapping("/users")
+	public String getAllUsers(Map<String, Object> model) {
+		logger.info("getAllUsers :::::::");
+		model.put("usersList", userRepository.findAll());
+		return "users_display";
 	}
 }
