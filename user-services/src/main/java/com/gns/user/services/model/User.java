@@ -2,6 +2,7 @@ package com.gns.user.services.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,31 +10,37 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "user")
 public class User {
+	
+	@Column(name = "userId")
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long uid;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long uid;
 
-    @NotBlank
-    private String name;
+	@Column(name = "userName", unique = true)
+	@NotBlank
+	private String name;
 
-    @NotBlank
-    private String email;
-    
-    @NotBlank
-    private String password;
-    
-    @NotBlank
-    private String createdBy;
-    
-    @NotNull
-    private LocalDateTime createdDateTime;
-    
-    @NotNull
-    private LocalDateTime modifiedDateTime;
+	@Column(name = "userEmail", unique = true)
+	@NotBlank
+	private String email;
+
+	@NotBlank
+	@Size(min = 6, max = 10)
+	private String password;
+
+	@NotBlank
+	private String createdBy;
+
+	@NotNull
+	private LocalDateTime createdDateTime;
+
+	@NotNull
+	private LocalDateTime modifiedDateTime;
 
 	public Long getUid() {
 		return uid;
@@ -90,7 +97,5 @@ public class User {
 	public void setModifiedDateTime(LocalDateTime modifiedDateTime) {
 		this.modifiedDateTime = modifiedDateTime;
 	}
-	
-	
 
 }

@@ -1,55 +1,49 @@
 package com.gns.user.services.controller;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gns.user.services.constants.UserServicesConstants;
 import com.gns.user.services.model.User;
-import com.gns.user.services.repository.UserRepository;
+import com.gns.user.services.service.UserServices;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("api/user")
 public class UserServicesController {
-
-	@Autowired
-	Environment environment;
 
 	Logger logger = LoggerFactory.getLogger(UserServicesController.class);
 
 	@Autowired
-	UserRepository userRepository;
+	Environment environment;
 
-	// Create a new Note
-	@PostMapping("/create")
-	public User createNote(@Valid @RequestBody User user) {
-		return userRepository.save(user);
+	@Autowired
+	UserServices userServices;
+
+	@PostMapping(path = "createUser", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> createUser(@RequestBody User userObj) {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			jsonObject = userServices.validateAndCreateUser(userObj);
+		} catch (Exception e) {
+			jsonObject.put(UserServicesConstants.STATUS_CODE, 500);
+			jsonObject.put(UserServicesConstants.MESSAGE, e.getMessage());
+		}
+		return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
 	}
 
-	// Delete a Note
-	@DeleteMapping("/user/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable(value = "id") Long userId) {
-		userRepository.deleteById(null);
-		return ResponseEntity.ok().build();
-	}
-
-	// Display All users
-	@GetMapping("/users")
-	public String getAllUsers(Map<String, Object> model) {
-		logger.info("getAllUsers :::::::");
-		model.put("usersList", userRepository.findAll());
-		return "users_display";
+	@GetMapping("healthStatus")
+	public String healthCheck() {
+		return "User Services API is running on " + environment.getProperty("local.server.port") + " Port";
 	}
 }
