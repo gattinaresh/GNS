@@ -1,6 +1,7 @@
 package com.gns.user.services.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.gns.user.services.constants.UserServicesConstants;
 import com.gns.user.services.model.User;
 import com.gns.user.services.repository.UserRepository;
+import com.gns.user.services.security.TokenService;
 import com.gns.user.services.util.UserServicesUtil;
 
 @Service
@@ -20,6 +22,9 @@ public class UserServices {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserServices.class);
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	TokenService tokenService;
 
 	public JSONObject validateAndCreateUser(User user) {
 		JSONObject responseJsonObject = new JSONObject();
@@ -46,4 +51,28 @@ public class UserServices {
 		}
 		return responseJsonObject;
 	}
+
+	public List<User> getAllUser() {
+		return userRepository.findAll();
+	}
+
+	public JSONObject authenticateUser(String userName, String userPassword) {
+		JSONObject responseJsonObject = new JSONObject();
+		try {
+			boolean isUserAuthenticated = userRepository.autheticateUser(userName, userPassword);
+			if (isUserAuthenticated) {
+				responseJsonObject.put(UserServicesConstants.JWT_TOKEN, tokenService.addAuthentication(userName));
+			} else {
+				responseJsonObject.put(UserServicesConstants.IS_USER_AUTHENTICATED, isUserAuthenticated);
+			}
+			responseJsonObject.put(UserServicesConstants.STATUS_CODE, 200);
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			e.printStackTrace();
+			responseJsonObject.put(UserServicesConstants.STATUS_CODE, 500);
+			responseJsonObject.put(UserServicesConstants.MESSAGE, e.getMessage());
+		}
+		return responseJsonObject;
+	}
+
 }
