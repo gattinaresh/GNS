@@ -1,14 +1,21 @@
 package com.gns.user.services.service;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.gns.user.services.constants.UserServicesConstants;
 import com.gns.user.services.model.User;
@@ -19,7 +26,8 @@ import com.gns.user.services.util.UserServicesUtil;
 @Service
 public class UserServices {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServices.class);
+	private static final Logger LOGGER = LogManager.getLogger(UserServices.class);
+
 	@Autowired
 	UserRepository userRepository;
 
@@ -40,12 +48,12 @@ public class UserServices {
 				LocalDateTime now = LocalDateTime.now();
 				user.setCreatedDateTime(now);
 				user.setModifiedDateTime(now);
+				LOGGER.info("User Saving::" + user.toString());
 				userRepository.save(user);
 				responseJsonObject.put(UserServicesConstants.STATUS_CODE, 200);
 			}
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e);
 			responseJsonObject.put(UserServicesConstants.STATUS_CODE, 500);
 			responseJsonObject.put(UserServicesConstants.MESSAGE, e.getMessage());
 		}
@@ -68,11 +76,51 @@ public class UserServices {
 			responseJsonObject.put(UserServicesConstants.STATUS_CODE, 200);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
-			e.printStackTrace();
 			responseJsonObject.put(UserServicesConstants.STATUS_CODE, 500);
 			responseJsonObject.put(UserServicesConstants.MESSAGE, e.getMessage());
 		}
 		return responseJsonObject;
 	}
 
+
+	public JSONObject importUsers(MultipartFile importUsersCsvFile) {
+		JSONObject responseJsonObject = new JSONObject();
+		try {
+			LOGGER.info("file.getContentType():::" + importUsersCsvFile.getContentType());
+			if (!importUsersCsvFile.isEmpty()) {
+				responseJsonObject.put(UserServicesConstants.RESULT,
+						processCSVFile(importUsersCsvFile.getInputStream()));
+				responseJsonObject.put(UserServicesConstants.STATUS_CODE, 200);
+			} else {
+				responseJsonObject.put(UserServicesConstants.STATUS_CODE, 400);
+				responseJsonObject.put(UserServicesConstants.MESSAGE, "InValid Data");
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
+			responseJsonObject.put(UserServicesConstants.STATUS_CODE, 500);
+			responseJsonObject.put(UserServicesConstants.MESSAGE, e.getMessage());
+		}
+		return responseJsonObject;
+	}
+
+	private JSONArray processCSVFile(InputStream is) {
+		JSONArray jsonArray = new JSONArray();
+		try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+				CSVParser csvParser = new CSVParser(fileReader,
+						CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());) {
+			Iterable<CSVRecord> csvRecords = csvParser.getRecords();
+			for (CSVRecord csvRecord : csvRecords) {
+				User user = new User();
+				user.setCreatedBy(csvRecord.get("createdBy"));
+				user.setName(csvRecord.get("userName"));
+				user.setPassword(csvRecord.get("password"));
+				user.setEmail(csvRecord.get("userEmail"));
+				jsonArray.put(validateAndCreateUser(user));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error(e);
+		}
+		return jsonArray;
+	}
 }

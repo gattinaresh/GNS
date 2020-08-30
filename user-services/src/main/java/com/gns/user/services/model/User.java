@@ -98,4 +98,10 @@ public class User {
 		this.modifiedDateTime = modifiedDateTime;
 	}
 
+	@Override
+	public String toString() {
+		return "User [uid=" + uid + ", name=" + name + ", email=" + email + ", password=" + password + ", createdBy="
+				+ createdBy + ", createdDateTime=" + createdDateTime + ", modifiedDateTime=" + modifiedDateTime + "]";
+	}
+
 }

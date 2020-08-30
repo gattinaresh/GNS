@@ -1,7 +1,7 @@
 package com.gns.user.services.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,8 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-
-	private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
+	private static final Logger logger = LogManager.getLogger(WebSecurityConfig.class);
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {

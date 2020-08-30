@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  mysql-docker-container:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=gns
+      - MYSQL_USER=root
+    ports:
+      - 3307:3306
+  gns_user_services-container:
+    image: gns_user_services:latest
+    ports:
+       - 9090:9090
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-docker-container:3306/gns?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    depends_on:
+       - mysql-docker-container
+networks:
+  host:
+  host:    

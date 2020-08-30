@@ -1,16 +1,15 @@
 package com.gns.user.services.util;
 
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.gns.user.services.model.User;
 import com.gns.user.services.repository.UserRepository;
 
 public class UserServicesUtil {
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServicesUtil.class);
-
+	private static final Logger LOGGER = LogManager.getLogger(UserServicesUtil.class);
 	public void validateAttr(String userAttrVal, String userAttrErrorMsg, JSONArray jsonArray) {
 		if (userAttrVal == null || userAttrVal.isEmpty()) {
 			jsonArray.put(userAttrErrorMsg);
@@ -35,7 +34,6 @@ public class UserServicesUtil {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOGGER.error(e.getMessage());
 		}
 		return jsonArray;

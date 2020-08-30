@@ -1,8 +1,8 @@
 package com.gns.user.services.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.gns.user.services.constants.UserServicesConstants;
 import com.gns.user.services.model.User;
@@ -25,8 +27,7 @@ import com.gns.user.services.service.UserServices;
 @RequestMapping("api/user")
 public class UserServicesController {
 
-	private static final Logger logger = LoggerFactory.getLogger(UserServicesController.class);
-
+	private static final Logger LOGGER = LogManager.getLogger(UserServicesController.class);
 	@Autowired
 	Environment environment;
 
@@ -70,8 +71,24 @@ public class UserServicesController {
 		return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
 	}
 
+	@PostMapping("importUsers")
+	public ResponseEntity<String> handleFileUpload(@RequestParam("import_user_csv") MultipartFile importUsersCsvFile,
+			RedirectAttributes redirectAttributes) {
+		JSONObject jsonObject = new JSONObject();
+		try {
+			LOGGER.info("In handleFileUpload");
+			jsonObject = userServices.importUsers(importUsersCsvFile);
+		} catch (Exception e) {
+			jsonObject.put(UserServicesConstants.STATUS_CODE, 500);
+			jsonObject.put(UserServicesConstants.MESSAGE, e.getMessage());
+		}
+		return new ResponseEntity<>(jsonObject.toString(), HttpStatus.OK);
+	}
+
 	@GetMapping("healthStatus")
 	public String healthCheck() {
+		LOGGER.debug("Debug Message Logged !!!");
+		LOGGER.info("Info Message Logged !!!");
 		return "User Services API is running on " + environment.getProperty("local.server.port") + " Port";
 	}
 }
