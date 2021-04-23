@@ -1,6 +1,0 @@
-com/gns/user/services/controller/WelcomeController.class
-com/gns/user/services/model/User.class
-com/gns/user/services/repository/UserRepository.class
-com/gns/user/services/controller/UserServicesController.class
-com/gns/user/services/util/UserServicesUtil.class
-com/gns/user/services/UserServicesApplication.class

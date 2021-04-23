@@ -1,0 +1,10 @@
+com\gns\user\services\model\User.class
+com\gns\user\services\controller\UserServicesController.class
+com\gns\user\services\security\TokenService.class
+com\gns\user\services\service\UserServices.class
+com\gns\user\services\repository\UserRepository.class
+com\gns\user\services\util\UserServicesUtil.class
+com\gns\user\services\UserServicesApplication.class
+com\gns\user\services\security\WebSecurityConfig.class
+com\gns\user\services\security\JWTAuthorizationFilter.class
+com\gns\user\services\constants\UserServicesConstants.class
