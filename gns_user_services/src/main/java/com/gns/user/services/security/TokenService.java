@@ -26,7 +26,7 @@ public class TokenService {
 	public String addAuthentication(String userName) {
 		logger.info("userName:::" + userName);
 		String jwtToken = Jwts.builder().setSubject(userName)
-				.setExpiration(new Date(System.currentTimeMillis() + UserServicesConstants.EXPIRATIONTIME))
+				.setExpiration(new Date(System.currentTimeMillis() + UserServicesConstants.EXTIRPATION))
 				.signWith(SignatureAlgorithm.HS512, UserServicesConstants.SECRET).compact();
 		return UserServicesConstants.TOKEN_PREFIX + " " + jwtToken;
 	}

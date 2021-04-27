@@ -28,7 +28,7 @@ import com.gns.user.services.model.User;
 import com.gns.user.services.service.UserServices;
 import com.gns.user.services.util.ExceptionHandlerUtil;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("api/user")
 public class UserServicesController {

@@ -19,7 +19,7 @@ public class UserServicesConstants {
 	
 	public static final String SECRET = "Gns_key_Secret";
 	public static final String JWT_TOKEN  = "jwtToken";
-	public static final long EXPIRATIONTIME = 864_000_000; // 10 days
+	public static final long EXTIRPATION = 864_000_000; // 10 days
 	public static final String TOKEN_PREFIX = "Bearer";
 	public static final String IS_USER_AUTHENTICATED = "isUserAuthenticated";
 
