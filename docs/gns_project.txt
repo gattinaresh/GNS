@@ -8,6 +8,15 @@ Remainders
 
 
 
+docker build -t naresh0408/gns_repo:users-api_1 .
+
+docker push naresh0408/gns_repo:tagname
+
+docker run -p 8080:8080 naresh0408/gns_repo:users-api_1
 
 
-npx create-react-app gns_user_app
+kill all running containers with docker kill $(docker ps -q) 
+delete all stopped containers with docker rm $(docker ps -a -q)
+
+
+docker system prune -a

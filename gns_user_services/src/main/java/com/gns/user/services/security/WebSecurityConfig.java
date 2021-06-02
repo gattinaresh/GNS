@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		logger.info("WebSecurityConfig:::");
 		http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.authorizeRequests().antMatchers("/api/user/healthStatus", "/api/user/login").permitAll()
+				.authorizeRequests().antMatchers("/api/user/healthStatus", "/api/user/login","/kafka/publish").permitAll()
 				.antMatchers(HttpMethod.OPTIONS).permitAll().anyRequest().authenticated().and()
 				.addFilter(new JWTAuthorizationFilter(authenticationManager(), getApplicationContext()));
 	}
