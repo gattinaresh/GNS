@@ -20,3 +20,16 @@ delete all stopped containers with docker rm $(docker ps -a -q)
 
 
 docker system prune -a
+
+
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --<topic-nam testTopic --from-beginning
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic testTopic --from-beginning
